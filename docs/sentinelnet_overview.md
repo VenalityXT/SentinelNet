@@ -24,7 +24,7 @@ Packet Capture
 → Alert Generation  
 → Log Output
 
-Xmermaid
+```mermaid
 ---
 config:
   layout: dagre
@@ -40,7 +40,7 @@ flowchart TB
     E4 --> F
     F --> G1["alerts.jsonl<br>Machine Readable"] & G2["Console Output"] & G3["alerts.log<br>Human Readable"]
     G3@{ shape: rect}
-X
+```
 
 Each packet is processed independently. When a policy condition is met, an alert is generated and logged immediately.
 
