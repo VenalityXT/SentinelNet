@@ -171,7 +171,7 @@ Output behavior and paths can be customized in the policy file.
 
 ---
 
-### Running Tests
+### Verification
 
 SentinelNet includes unit tests that validate detection behavior using constructed packets.
 
@@ -183,6 +183,202 @@ pytest
 
 All tests should pass before modifying detection logic or policies
 
+---
+## 🧪 Generate Traffic
+
+This section provides safe, reproducible commands that can be used to generate network activity and validate SentinelNet detection behavior.  
+All examples below produce **real alerts** and populate both `alerts.jsonl` and `alerts.log`.
+
+These actions are **benign test scenarios**, not exploits.
+
+---
+
+### Before You Begin
+
+Ensure SentinelNet is running and actively capturing traffic:
+
+```bash
+python src/sentinelnet.py --policy policies/default.json --iface "Ethernet"
+```
+
+Notes:
+- Some commands require a second machine or VM on the same network (recommended)
+- Alternatively, target your router or another reachable LAN host
+- Packet capture may require elevated privileges depending on your OS
+
+---
+
+### 1️⃣ Legacy Name Resolution (NBNS / LLMNR)
+
+This detection is commonly triggered automatically on Windows systems but can be forced manually.
+
+**Windows**
+
+```cmd
+ping nonexistentsentinelhost
+```
+
+**Why this works**
+- Windows attempts LLMNR / NBNS name resolution
+- Generates UDP traffic on ports 5355 (LLMNR) or 137 (NBNS)
+- SentinelNet logs `LEGACY_NAME_RESOLUTION`
+
+This is the fastest way to generate immediate alert output.
+
+---
+
+### 2️⃣ Disallowed Port Detection (FTP / Telnet / SMB)
+
+#### FTP (TCP 21)
+
+```bash
+ftp <target-ip>
+```
+
+Even a failed connection attempt is sufficient.
+
+**Expected alert**
+- `DISALLOWED_PORT`
+- `service: FTP`
+
+---
+
+#### Telnet (TCP 23)
+
+```bash
+telnet <target-ip>
+```
+
+Triggers immediately on connection attempt.
+
+---
+
+#### SMB (TCP 445)
+
+**Linux / WSL**
+
+```bash
+nc <target-ip> 445
+```
+
+**Windows**
+
+```cmd
+net use \\<target-ip>\share
+```
+
+---
+
+### 3️⃣ HTTP Basic Authentication (Cleartext Credentials)
+
+This is one of SentinelNet’s most visible detections.
+
+#### Using curl (recommended)
+
+```bash
+curl -u testuser:testpass http://<target-ip>/
+```
+
+**Why this works**
+- Sends an `Authorization: Basic <base64>` header
+- SentinelNet detects and decodes the credential payload
+- Logs `CLEARTEXT_HTTP_BASIC_AUTH`
+- Evidence field is populated when possible
+
+---
+
+#### Using PowerShell
+
+```powershell
+$pair = "user:pass"
+$bytes = [System.Text.Encoding]::UTF8.GetBytes($pair)
+$encoded = [Convert]::ToBase64String($bytes)
+
+Invoke-WebRequest http://<target-ip>/ -Headers @{
+  Authorization = "Basic $encoded"
+}
+```
+
+---
+
+### 4️⃣ FTP Cleartext Credential Detection (USER / PASS)
+
+```bash
+ftp <target-ip>
+```
+
+Then enter:
+
+```
+USER testuser
+PASS testpass
+```
+
+**Expected alert**
+- `FTP_CLEARTEXT_CREDENTIALS`
+- Evidence may include extracted username and password (best effort)
+
+---
+
+### 5️⃣ Mixed Traffic (Multiple Detections)
+
+Run the following commands in quick succession:
+
+```bash
+ping fakehost123
+curl -u admin:admin http://<target-ip>/
+ftp <target-ip>
+telnet <target-ip>
+```
+
+This will generate:
+- Legacy name resolution alerts
+- HTTP Basic Authentication alerts
+- Disallowed port alerts
+- FTP cleartext credential alerts
+
+This scenario is ideal for demonstrating multiple detections back-to-back in the log files.
+
+---
+
+### 6️⃣ Optional: Manual UDP Legacy Traffic
+
+To explicitly trigger legacy UDP detections:
+
+```bash
+nc -u <target-ip> 137
+nc -u <target-ip> 5355
+```
+
+---
+
+### Expected Output
+
+After running the commands above, SentinelNet will generate alerts such as:
+- `LEGACY_NAME_RESOLUTION`
+- `DISALLOWED_PORT`
+- `CLEARTEXT_HTTP_BASIC_AUTH`
+- `FTP_CLEARTEXT_CREDENTIALS`
+
+Alerts will include:
+- Varying severity levels
+- Different protocol and service identifiers
+- Evidence fields where applicable
+- Clean, UTC timestamps
+
+---
+
+### Documentation Tip
+
+For documentation or demonstration purposes:
+- Run SentinelNet in one terminal
+- Generate test traffic in another
+- Capture screenshots of:
+  - Console output
+  - `alerts.jsonl`
+  - `alerts.log`
+
+This provides a clear, end-to-end demonstration of SentinelNet’s detection capabilities.
 
 ---
 
