@@ -54,7 +54,7 @@ SentinelNet is intended as a **research and learning framework** for understandi
 
 ---
 
-## Detection Capabilities
+## 🔍 Detection Capabilities
 
 ### Disallowed Protocol Detection  
 Identifies traffic using insecure or deprecated protocols such as FTP, Telnet, or other cleartext services that violate defined network policy.
@@ -76,15 +76,100 @@ Each detection generates a structured event describing:
 
 ---
 
+## 🚀 Getting Started
+
 ## Getting Started
 
-Run the detection engine from the `src/` directory with the appropriate policy file loaded from `policies/`.
+This section outlines how to run SentinelNet locally after downloading or cloning the repository.
 
-Refer to the documentation in `docs/` for:
-- Supported policy rules
-- Detection logic explanations
-- Example alert outputs
-- Lab validation scenarios
+### Prerequisites
+
+SentinelNet is developed and tested using **Python 3.11+**.  
+Ensure Python and pip are installed and available in your system path.
+
+Verify your installation:
+
+```bash
+python --version
+pip --version
+```
+
+> [!NOTE]
+> If Python is not installed, download it from:  
+> https://www.python.org/downloads/
+
+---
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/SentinelNet.git
+cd SentinelNet
+```
+
+---
+
+### Install Dependencies
+
+SentinelNet relies on Scapy for packet capture and inspection.
+
+Install required Python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+If running tests or modifying the detection logic, install pytest as well:
+
+```bash
+pip install pytest
+```
+
+Packet capture may require elevated privileges depending on your operating system and network interface.
+
+---
+
+### Running SentinelNet
+
+The detection engine is executed from the `src/` directory and is driven by a JSON-based policy file located in `policies/`.
+
+Basic example:
+
+```bash
+python src/sentinelnet.py --policy policies/default.json --iface "Ethernet"
+```
+
+Common options:
+- `--policy` : Path to the policy configuration file
+- `--iface`  : Network interface to monitor
+- `--count`  : Optional packet limit (0 = unlimited)
+
+SentinelNet will begin passively capturing traffic and generating alerts based on the active policy rules.
+
+---
+
+### Alert Output
+
+By default, SentinelNet generates:
+- **Machine-readable alerts** (`alerts.jsonl`) suitable for parsing or SIEM ingestion
+- **Human-readable logs** (`alerts.log`) for direct review
+
+Output behavior and paths can be customized in the policy file.
+
+---
+
+### Running Tests
+
+SentinelNet includes unit tests that validate detection behavior using constructed packets.
+
+From the project root, run:
+
+```bash
+pytest
+```
+
+All tests should pass before modifying detection logic or policies
+
 
 ---
 
