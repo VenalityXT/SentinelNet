@@ -1,10 +1,10 @@
 <div align="center">
   
-<img width="1159" height="797" alt="SENTINEL NET" src="https://github.com/user-attachments/assets/89462287-8d4e-4e47-8df5-db9d7192bfbb" />
+<img width="1159" height="728" alt="SENTINEL NET (1)" src="https://github.com/user-attachments/assets/37496cbe-cd0c-49e8-a332-810f00ecde12" />
 
 ---
 
-### Network Policy Violation Detector
+## Network Security Detection Framework
 
 ![Python](https://img.shields.io/badge/Python-3.11+-blue)
 ![Scapy](https://img.shields.io/badge/Scapy-Packet%20Inspection-green)
@@ -12,7 +12,7 @@
 ![Focus](https://img.shields.io/badge/Focus-Blue%20Team%20Detection-informational)
 ![Tests](https://img.shields.io/badge/Tests-pytest-success)
 
-**Passive, policy-driven network monitoring framework that inspects live traffic and identifies violations of defined security policies using packet-level analysis.**
+**Passive, policy-driven network detection framework that performs kernel-assisted packet capture and deep packet inspection in user space to identify violations of defined security policies in live network traffic.**
 
 [Architecture](docs/architecture.md) ·
 [Policy Configuration](docs/policy.md) ·
