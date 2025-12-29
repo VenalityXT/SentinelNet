@@ -1,111 +1,107 @@
 # Policy Configuration Reference
 
-SentinelNet behavior is fully controlled through a JSON-based policy file.
-The policy defines how traffic is captured, which detections are applied,
-and how alerts are generated and written.
+SentinelNet behavior is fully controlled through a JSON-based policy file.  
+The policy defines how traffic is captured, which detection modules are applied, and how alerts are generated and written.
 
-The policy file is intentionally explicit to promote predictable behavior,
-safe operation, and reproducibility across environments.
+The policy file is intentionally explicit to promote predictable behavior, safe operation, and reproducibility across environments.
 
 ---
 
 ## Policy Structure Overview
 
-```json
+Xjson
 {
   "capture": { ... },
   "rules": { ... },
   "output": { ... }
 }
-```
+X
 
-Each top-level section operates independently. A misconfiguration in one
-section does not silently alter the behavior of others.
+Each top-level section operates independently. A misconfiguration in one section does not silently alter the behavior of others.
 
 ---
 
 ## Capture Section
 
-The `capture` section controls how SentinelNet listens to network traffic
-before any detection logic is applied.
+The `capture` section controls how SentinelNet listens to network traffic **before any detection logic is applied**.
 
-```json
+Xjson
 "capture": {
   "interface": "Ethernet",
   "bpf_filter": "tcp or udp",
   "store_packets": false
 }
-```
+X
 
-### INTERFACE
+### interface
 > Specifies the network interface SentinelNet listens on.
 
-**Behavior**  
-- Must match an interface name visible to the operating system  
-- If omitted, Scapy defaults are used  
+**Behavior**
+- Must match an interface name visible to the operating system
+- If omitted, Scapy defaults are used
 
 **Why this exists**  
-Explicit interface selection prevents accidental monitoring of unintended
-networks, especially on systems with multiple adapters such as VPNs,
-virtual switches, or host-only interfaces.
+Explicit interface selection prevents accidental monitoring of unintended networks, especially on systems with multiple adapters such as VPNs, virtual switches, or host-only interfaces.
 
-**When to change it**  
-- Monitoring a specific VLAN or virtual interface  
-- Running SentinelNet on a host with multiple NICs  
+**When to change it**
+- Monitoring a specific VLAN or virtual interface
+- Running SentinelNet on a host with multiple network adapters
 
-### BPF_FILTER
+---
+
+### bpf_filter
 > Defines a Berkeley Packet Filter (BPF) expression applied at the capture layer before packets reach Python.
 
 **What BPF does**  
-BPF filtering occurs at the kernel or capture-driver level and determines
-which packets are delivered to SentinelNet.
-
+BPF filtering occurs at the kernel or capture-driver level and determines which packets are delivered to SentinelNet.  
 Only packets matching the filter expression are passed to the application.
 
 **Why BPF filtering matters**  
 Using a BPF filter:
-- Reduces CPU usage  
-- Reduces memory usage  
-- Eliminates unnecessary packet processing  
-- Improves detection performance and stability  
+- Reduces CPU usage
+- Reduces memory usage
+- Eliminates unnecessary packet processing
+- Improves detection performance and stability
 
-Without a BPF filter, SentinelNet would receive all packets on the interface,
-including traffic it does not inspect.
+Without a BPF filter, SentinelNet would receive all packets on the interface, including traffic it does not inspect.
 
-Example  
-```json
+**Example**
+
+Xjson
 "bpf_filter": "tcp or udp"
-```
+X
 
 This restricts capture to TCP and UDP traffic only.
 
-Common BPF filter examples  
+**Common BPF filter examples**
 - `"tcp"` — capture only TCP traffic  
 - `"udp"` — capture only UDP traffic  
 - `"tcp and port 80"` — capture HTTP traffic  
 - `"udp and (port 137 or port 5355)"` — capture legacy name resolution traffic  
 
-Notes  
-- BPF expressions are case-sensitive and should be lowercase  
-- Invalid BPF expressions will cause SentinelNet to fail at startup  
+**Notes**
+- BPF expressions are case-sensitive and should be lowercase
+- Invalid BPF expressions will cause SentinelNet to fail at startup
 
-### STORE_PACKETS
+---
+
+### store_packets
 > Controls whether captured packets are retained in memory.
 
-**Behavior**  
-- `false` (default): packets are processed and discarded immediately  
-- `true`: packets are retained in memory by Scapy  
+**Behavior**
+- `false` (default): packets are processed and discarded immediately
+- `true`: packets are retained in memory by Scapy
 
 **Why this exists**  
 Storing packets can be useful for:
-- Debugging detector logic  
-- Post-processing or packet replay  
-- Development and testing  
+- Debugging detector logic
+- Post-processing or packet replay
+- Development and testing
 
-**Why it is disabled by default**  
-- Retaining packets increases memory usage  
-- SentinelNet is designed as a streaming detection tool  
-- Packets are processed independently and do not require storage  
+**Why it is disabled by default**
+- Retaining packets increases memory usage
+- SentinelNet is designed as a streaming detection tool
+- Packets are processed independently and do not require storage
 
 **Recommended setting**  
 Leave disabled unless explicitly debugging or developing detectors.
@@ -114,10 +110,9 @@ Leave disabled unless explicitly debugging or developing detectors.
 
 ## Rules Section
 
-The `rules` section defines which detection modules are enabled and how
-they behave.
+The `rules` section defines which detection modules are enabled and how they behave.
 
-```json
+Xjson
 "rules": {
   "disallowed_ports": {
     "enabled": true,
@@ -128,37 +123,40 @@ they behave.
     "severity": "medium"
   }
 }
-```
+X
 
 ### Common Rule Fields
 
-#### ENABLED  
+#### enabled
 > Enables or disables the detection rule.
 
-**Behavior**  
-- `true`: detector is active  
-- `false`: detector is skipped entirely  
+**Behavior**
+- `true`: detector is active
+- `false`: detector is skipped entirely
 
 Disabling a rule prevents any processing for that detector.
 
-#### SEVERITY  
+---
+
+#### severity
 > Defines the severity level assigned to alerts generated by the rule.
 
 **Behavior**  
-Severity values are not enforced by SentinelNet and are intended for
-downstream systems such as SIEMs or log analysis tools.
+Severity values are not enforced by SentinelNet and are intended for downstream systems such as SIEMs or log analysis tools.
 
-**Possible Values**  
-- `low`  
-- `medium`  
-- `high`  
+**Possible values**
+- `low`
+- `medium`
+- `high`
+
+---
 
 ### Rule Independence
 
 Each detection rule:
-- Operates independently  
-- Does not affect the execution of other rules  
-- Can be enabled or disabled without side effects  
+- Operates independently
+- Does not affect the execution of other rules
+- Can be enabled or disabled without side effects
 
 Multiple rules may generate alerts for the same packet.
 
@@ -168,45 +166,44 @@ Multiple rules may generate alerts for the same packet.
 
 The `output` section controls how and where alerts are written.
 
-```json
+Xjson
 "output": {
   "alerts_path": "logs/alerts.jsonl",
   "console": true
 }
-```
+X
 
-#### ALERTS_PATH  
+### alerts_path
 > Defines the file path where machine-readable alerts are written.
 
-**Behavior**  
-- Alerts are written in JSON Lines (`.jsonl`) format   
-- Suitable for SIEM ingestion or log pipelines     
-- One alert per line    
+**Behavior**
+- Alerts are written in JSON Lines (`.jsonl`) format
+- Suitable for SIEM ingestion or log pipelines
+- One alert per line
 
-**Path Resolution**  
-Paths are resolved relative to the project root unless an absolute path
-is provided.
+**Path resolution**  
+Paths are resolved relative to the project root unless an absolute path is provided.
 
+---
 
-#### CONSOLE  
+### console
 > Controls whether alerts are also printed to standard output.
 
-**Behavior**  
-- `true`: alerts are printed to the console as they occur  
-- `false`: alerts are written only to file  
+**Behavior**
+- `true`: alerts are printed to the console as they occur
+- `false`: alerts are written only to file
 
-**Use Cases**  
-- Enabled for development and demonstrations  
-- Disabled when running SentinelNet as a background process  
+**Use cases**
+- Enabled for development and demonstrations
+- Disabled when running SentinelNet as a background process
 
 ---
 
 ## Design Notes
 
-- SentinelNet is intentionally policy-driven  
-- No code changes are required to enable or disable detectors  
-- Policies are validated at startup to prevent silent failures  
-- Each packet is evaluated independently and processed immediately  
+- SentinelNet is intentionally policy-driven
+- No code changes are required to enable or disable detectors
+- Policies are validated at startup to prevent silent failures
+- Each packet is evaluated independently and processed immediately
 
-This design ensures SentinelNet remains predictable, transparent,
-and safe to operate in both lab and production-like environments.
+This design ensures SentinelNet remains predictable, transparent, and safe to operate in both lab and production-like environments.
