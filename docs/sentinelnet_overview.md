@@ -1,17 +1,17 @@
 # SentinelNet Overview
 
-SentinelNet is a passive, policy-driven network detection tool designed to identify insecure or legacy network behavior through packet-level inspection. It operates as a lightweight visibility layer, producing structured alerts suitable for SOC workflows and human review.
+SentinelNet is a passive, policy-driven network detection framework designed to identify insecure or legacy network behavior through packet-level inspection. It operates as a lightweight visibility layer, producing structured alerts suitable for SOC workflows as well as direct human review.
 
 ---
 
 ## Purpose
 
 SentinelNet is built to:
-- Detect insecure protocols and authentication mechanisms
-- Highlight policy violations in internal or edge networks
+- Detect insecure protocols and cleartext authentication mechanisms
+- Highlight explicit policy violations in internal or edge networks
 - Provide explainable, event-based alerts without active interference
 
-SentinelNet intentionally avoids intrusion prevention, packet manipulation, or traffic blocking.
+SentinelNet intentionally avoids intrusion prevention, packet manipulation, traffic blocking, or inline enforcement.
 
 ---
 
@@ -24,7 +24,7 @@ Packet Capture
 → Alert Generation  
 → Log Output
 
-```mermaid
+Xmermaid
 ---
 config:
   layout: dagre
@@ -39,9 +39,8 @@ flowchart TB
     E3 --> F
     E4 --> F
     F --> G1["alerts.jsonl<br>Machine Readable"] & G2["Console Output"] & G3["alerts.log<br>Human Readable"]
-
     G3@{ shape: rect}
-```
+X
 
 Each packet is processed independently. When a policy condition is met, an alert is generated and logged immediately.
 
@@ -49,22 +48,23 @@ Each packet is processed independently. When a policy condition is met, an alert
 
 ## Detection Model
 
-- Stateless packet inspection
+SentinelNet uses a deterministic, packet-level detection model:
+- Stateless inspection of individual packets
 - One packet evaluated at a time
-- No packet buffering or stream reconstruction
-- All detection behavior controlled via policy configuration
+- No packet buffering or TCP stream reconstruction
+- All detection behavior controlled via explicit policy configuration
 
-This design favors stability, low resource usage, and predictable behavior.
+This design prioritizes stability, low resource usage, and predictable behavior over behavioral inference or anomaly modeling.
 
 ---
 
 ## Output Model
 
-SentinelNet produces two forms of output:
-- JSONL alerts for machine ingestion and automation
-- Human-readable log entries for manual review
+SentinelNet produces two synchronized forms of output:
+- **JSONL alerts** intended for machine ingestion, automation, or SIEM pipelines
+- **Human-readable log entries** intended for direct review and validation
 
-Both outputs are generated from the same alert event.
+Both outputs are derived from the same alert event and represent identical detection data.
 
 ---
 
@@ -73,6 +73,6 @@ Both outputs are generated from the same alert event.
 SentinelNet is intended for:
 - Learning and experimentation
 - Home lab and internal network visibility
-- Demonstrating detection engineering concepts
+- Demonstrating packet-level detection engineering concepts
 
-It is not intended to replace full IDS or NDR platforms.
+It is not intended to replace full intrusion detection systems (IDS) or network detection and response (NDR) platforms.
