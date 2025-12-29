@@ -24,6 +24,25 @@ Packet Capture
 → Alert Generation  
 → Log Output
 
+```mermaid
+---
+config:
+  layout: dagre
+---
+flowchart TB
+    A["Network Interface"] --> B["Scapy Packet Capture"]
+    B --> C["BPF Filter"]
+    C --> D["Packet Dispatcher"]
+    D --> E1["Disallowed Port Detector"] & E2["HTTP Basic Auth Detector"] & E3["FTP Credential Detector"] & E4["Legacy Name Resolution Detector"]
+    E1 --> F["Alert Generator"]
+    E2 --> F
+    E3 --> F
+    E4 --> F
+    F --> G1["alerts.jsonl<br>Machine readable"] & G2["Console Output"] & G3["alerts.log<br>Human Readable"]
+
+    G3@{ shape: rect}
+```
+
 Each packet is inspected independently. If a policy condition is met, an alert is generated and immediately logged.
 
 ---
