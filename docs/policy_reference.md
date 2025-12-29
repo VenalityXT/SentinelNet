@@ -9,13 +9,13 @@ The policy file is intentionally explicit to promote predictable behavior, safe 
 
 ## Policy Structure Overview
 
-Xjson
+```json
 {
   "capture": { ... },
   "rules": { ... },
   "output": { ... }
 }
-X
+```
 
 Each top-level section operates independently. A misconfiguration in one section does not silently alter the behavior of others.
 
@@ -25,13 +25,13 @@ Each top-level section operates independently. A misconfiguration in one section
 
 The `capture` section controls how SentinelNet listens to network traffic **before any detection logic is applied**.
 
-Xjson
+```json
 "capture": {
   "interface": "Ethernet",
   "bpf_filter": "tcp or udp",
   "store_packets": false
 }
-X
+```
 
 ### interface
 > Specifies the network interface SentinelNet listens on.
@@ -67,9 +67,9 @@ Without a BPF filter, SentinelNet would receive all packets on the interface, in
 
 **Example**
 
-Xjson
+```json
 "bpf_filter": "tcp or udp"
-X
+```
 
 This restricts capture to TCP and UDP traffic only.
 
@@ -112,7 +112,7 @@ Leave disabled unless explicitly debugging or developing detectors.
 
 The `rules` section defines which detection modules are enabled and how they behave.
 
-Xjson
+```json
 "rules": {
   "disallowed_ports": {
     "enabled": true,
@@ -123,7 +123,7 @@ Xjson
     "severity": "medium"
   }
 }
-X
+```
 
 ### Common Rule Fields
 
@@ -166,12 +166,12 @@ Multiple rules may generate alerts for the same packet.
 
 The `output` section controls how and where alerts are written.
 
-Xjson
+```json
 "output": {
   "alerts_path": "logs/alerts.jsonl",
   "console": true
 }
-X
+```
 
 ### alerts_path
 > Defines the file path where machine-readable alerts are written.
