@@ -28,12 +28,21 @@
 
 SentinelNet is a passive network detection framework designed to identify insecure protocols, cleartext authentication, and legacy communication patterns that violate defined security policies in enterprise-style networks.
 
+```mermaid
+flowchart TB
+    A["Policy Configuration<br/>Capture · Rules · Output)"] --> B["SentinelNet Core"]
+
+    B --> C["Detection Engine<br/>Stateless Packet Evaluation"]
+    C --> D["Alert Pipeline<br/>Structured Events"]
+
+    D --> E1["Machine Output<br/>alerts.jsonl"]
+    D --> E2["Human Output<br/>alerts.log / console"]
+
+    F["Live Network Traffic"] --> B
+```
+
 The tool emphasizes **defensive visibility**, **policy-driven analysis**, and **explainable alerts**, modeling how SOC teams reason about network risk rather than focusing on raw packet capture or active enforcement.
-
 SentinelNet is intended as a **research and learning framework** for understanding network security monitoring, protocol risk analysis, and detection engineering concepts in controlled lab environments.
-
-
-
 
 ## 📁 Repository Structure
 
