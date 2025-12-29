@@ -14,8 +14,8 @@
 
 **Passive, policy-driven network detection framework that performs kernel-assisted packet capture and deep packet inspection in user space to identify violations of defined security policies in live network traffic.**
 
-[Architecture](docs/architecture.md) ·
-[Policy Configuration](docs/policy.md) ·
+[Architecture](docs/sentinelnet_overview.md) ·
+[Policy Configuration](docs/policy_reference.md) ·
 [Detection Logic](src/detections.py) ·
 [Tests](tests/) ·
 [Source](src/)
