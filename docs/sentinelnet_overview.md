@@ -43,7 +43,7 @@ flowchart TB
     G3@{ shape: rect}
 ```
 
-Each packet is inspected independently. If a policy condition is met, an alert is generated and immediately logged.
+Each packet is processed independently. When a policy condition is met, an alert is generated and logged immediately.
 
 ---
 
