@@ -1,0 +1,77 @@
+{
+    "tool": {
+        "_comment": [
+            "- Identity & Metadata -",
+            "Vital for logs and SIEM ingestion / future multi-tool setups."
+        ],
+
+        "name": "SentinelNet",
+        "version": "1.0.0"   
+    },
+    
+
+    "capture":{
+        "_comment": [
+            "- Scapy Capture Settings -",
+            "Interface: Defines the network adapter to listen on.",
+            "bpf_filter: Enables Berkeley's kernel-level packet filtering for reduced CPU load and traffic volume.",
+            "store_packets: Defines if packets are kept in memory, default to false for long-running detection."
+        ],
+
+        "interface": "Ethernet",
+        "bpf_filter": "tcp or udp",
+        "store_packets": false
+    },
+
+
+    "rules": {
+        "_comment": [
+            "- Detection Logic Configuration -",
+            "disallowed_ports: Defines which ports are considered insecure or unauthorized.",
+            "cleartext_http_basic_auth: Inspects packet payload for Basic <base64> authorization (Cleartext credentials = immediate exposure).",
+            "ftp_cleartext_credentials: Inspects packet payloads for USER/PASS due to FTP being inherently insecure.",
+            "legacy_name_resolution: Detects legacy broadcast name resolutions which are often abused for credential poisoning."
+        ],
+
+        "disallowed_ports": {
+            "enabled": true,
+            "ports": {
+                "21": "FTP",
+                "23": "TELNET",
+                "445": "SMB",
+                "139": "NETBIOS-SSN",
+                "1433": "MSSQL",
+                "3389": "RDP"
+            },
+            "severity": "medium"
+        },
+        "cleartext_http_basic_auth": {
+            "enabled": true,
+            "severity": "high"
+        },
+        "ftp_cleartext_credentials": {
+            "enabled": true,
+            "severity": "high"
+        },
+        "legacy_name_resolution": {
+            "enabled": true,
+            "udp_ports": {
+                "5355": "LLMNR",
+                "137": "NBNS"
+            },
+            "severity": "low"
+        }
+    },
+
+
+    "output": {
+        "_comment": [
+            "- Alert Handling -",
+            "alerts_path: Defines where alert logs are stored.",
+            "console: Defines whether alerts are printed to the terminal."
+        ],
+
+        "alerts_path": "logs/alerts.jsonl",
+        "console": true
+    }
+}
