@@ -30,7 +30,7 @@ SentinelNet is a passive network detection framework designed to identify insecu
 
 ```mermaid
 flowchart TB
-    A["Policy Configuration<br/>Capture · Rules · Output"] --> B["SentinelNet Core<br>sentinelnet.py"]
+    A["Policy Configuration<br/>Capture · Rules · Output"] --> B["SentinelNet Core"]
 
     B --> C["Detection Engine<br/>Stateless Packet Evaluation"]
     C --> D["Alert Pipeline<br/>Structured Events"]
