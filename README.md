@@ -4,9 +4,9 @@ A passive network monitoring and detection framework that inspects live traffic 
 
 The tool is designed as a **defensive visibility and detection system**, emphasizing explainable alerts and policy-driven analysis rather than raw packet capture.
 
-> [!IMPORTANT]
+> [!NOTE]
 > This project is a **research and learning framework**, not a production intrusion detection system.
-> It is intended to demonstrate detection logic, protocol risk analysis, and SOC-style alerting concepts in a controlled lab environment.
+> It is intended to demonstrate detection logic, protocol risk analysis, and SOC-style alerting concepts in a lab environment.
 
 ---
 
