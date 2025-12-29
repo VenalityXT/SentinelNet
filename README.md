@@ -91,4 +91,4 @@ Refer to the documentation in `docs/` for:
 
 ## License
 
-This project is licensed under the [GNU GPLv3 License](LICENSE).
+This project is licensed under the [MIT License](LICENSE).
