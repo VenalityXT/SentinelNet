@@ -77,5 +77,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-# python src/sentinelnet.py --policy policies/default.json --iface "Ethernet"
