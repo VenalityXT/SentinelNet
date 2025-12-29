@@ -6,7 +6,7 @@ The tool is designed as a **defensive visibility and detection system**, emphasi
 
 > [!NOTE]
 > This project is a **research and learning framework**, not a production intrusion detection system.
-> It is intended to demonstrate detection logic, protocol risk analysis, and SOC-style alerting concepts in a lab environment.
+> It is intended to demonstrate detection logic, protocol risk analysis, and SOC-style alerting concepts in a controlled lab environment.
 
 ---
 
@@ -28,13 +28,9 @@ The tool is designed as a **defensive visibility and detection system**, emphasi
   Controlled traffic generation and validation scripts used to verify detection accuracy.  
   These scripts simulate insecure or policy-violating behavior for testing purposes only.
 
-> [!CAUTION]
-> Test traffic modules are provided **strictly for defensive validation and research**.
-> They must only be executed in isolated lab environments.
-
 ---
 
-## 📚 Detection Capabilities
+## Detection Capabilities
 
 ### Disallowed Protocol Detection  
 Identifies traffic using insecure or deprecated protocols such as FTP, Telnet, or other cleartext services that violate defined network policy.
@@ -56,7 +52,7 @@ Each detection generates a structured event describing:
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 Run the detection engine from the `src/` directory with the appropriate policy file loaded from `policies/`.
 
@@ -68,6 +64,6 @@ Refer to the documentation in `docs/` for:
 
 ---
 
-## 🔐 License
+## License
 
 This project is licensed under the [GNU GPLv3 License](LICENSE).
