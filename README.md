@@ -140,18 +140,22 @@ Packet capture may require elevated privileges depending on your operating syste
 
 ### Running SentinelNet
 
-The detection engine is executed from the `src/` directory and is driven by a JSON-based policy file located in `policies/`.
+The detection engine is executed from the `src/` directory and is driven by a JSON-based policy file located in `policies/` by default.
 
 Basic example:
 
 ```bash
-python src/sentinelnet.py --policy policies/default.json --iface "Ethernet"
+python src/sentinelnet.py
 ```
 
 Common options:
 - `--policy` : Path to the policy configuration file
 - `--iface`  : Network interface to monitor
 - `--count`  : Optional packet limit (0 = unlimited)
+
+```bash
+ python src/sentinelnet.py --policy policies/default.json --iface "Ethernet"
+ ```
 
 SentinelNet will begin passively capturing traffic and generating alerts based on the active policy rules.
 
