@@ -10,6 +10,10 @@ The tool is designed as a **defensive visibility and detection system**, emphasi
 
 ---
 
+<img width="1196" height="332" alt="image" src="https://github.com/user-attachments/assets/6eef47b3-d17e-4a5a-85d7-571e08a6f837" />
+
+
+
 ## 📁 Repository Structure
 
 - **`src/`**  
