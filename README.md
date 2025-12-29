@@ -1,16 +1,37 @@
-# Network Policy Violation Detector
-
-A passive network monitoring and detection framework that inspects live traffic and identifies violations of defined security policies. This project leverages packet-level inspection to detect insecure protocols, cleartext authentication, and unexpected internal communication patterns in segmented networks.
-
-The tool is designed as a **defensive visibility and detection system**, emphasizing explainable alerts and policy-driven analysis rather than raw packet capture.
-
-> [!NOTE]
-> This project is a **research and learning framework**, not a production intrusion detection system.
-> It is intended to demonstrate detection logic, protocol risk analysis, and SOC-style alerting concepts in a controlled lab environment.
+<div align="center">
+  
+<img width="1159" height="797" alt="SENTINEL NET" src="https://github.com/user-attachments/assets/89462287-8d4e-4e47-8df5-db9d7192bfbb" />
 
 ---
 
-<img width="1196" height="332" alt="image" src="https://github.com/user-attachments/assets/6eef47b3-d17e-4a5a-85d7-571e08a6f837" />
+### Network Policy Violation Detector
+
+![Python](https://img.shields.io/badge/Python-3.11+-blue)
+![Scapy](https://img.shields.io/badge/Scapy-Packet%20Inspection-green)
+![License](https://img.shields.io/badge/License-MIT-lightgrey)
+![Focus](https://img.shields.io/badge/Focus-Blue%20Team%20Detection-informational)
+![Tests](https://img.shields.io/badge/Tests-pytest-success)
+
+**Passive, policy-driven network monitoring framework that inspects live traffic and identifies violations of defined security policies using packet-level analysis.**
+
+[Architecture](docs/architecture.md) ·
+[Policy Configuration](docs/policy.md) ·
+[Detection Logic](src/detections.py) ·
+[Tests](tests/) ·
+[Source](src/)
+
+</div>
+
+---
+
+## Overview
+
+SentinelNet is a passive network visibility and detection framework designed to identify insecure protocols, cleartext authentication, and legacy communication patterns in enterprise-style networks.
+
+The tool emphasizes **defensive visibility**, **policy-driven analysis**, and **explainable alerts**, modeling how SOC teams reason about network risk rather than focusing on raw packet capture or active enforcement.
+
+SentinelNet is intended as a **research and learning framework** for understanding network security monitoring, protocol risk analysis, and detection engineering concepts in controlled lab environments.
+
 
 
 
