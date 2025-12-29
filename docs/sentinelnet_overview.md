@@ -38,7 +38,7 @@ flowchart TB
     E2 --> F
     E3 --> F
     E4 --> F
-    F --> G1["alerts.jsonl<br>Machine readable"] & G2["Console Output"] & G3["alerts.log<br>Human Readable"]
+    F --> G1["alerts.jsonl<br>Machine Readable"] & G2["Console Output"] & G3["alerts.log<br>Human Readable"]
 
     G3@{ shape: rect}
 ```
