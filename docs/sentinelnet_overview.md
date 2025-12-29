@@ -19,10 +19,7 @@ SentinelNet intentionally avoids intrusion prevention, packet manipulation, traf
 
 SentinelNet follows a simple, stream-based processing model:
 
-Packet Capture  
-→ Detector Engine  
-→ Alert Generation  
-→ Log Output
+Packet Capture → Detector Engine → Alert Generation → Log Output
 
 ```mermaid
 ---
