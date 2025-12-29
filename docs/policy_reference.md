@@ -53,8 +53,6 @@ virtual switches, or host-only interfaces.
 - Monitoring a specific VLAN or virtual interface  
 - Running SentinelNet on a host with multiple NICs  
 
----
-
 ### BPF_FILTER
 > Defines a Berkeley Packet Filter (BPF) expression applied at the capture layer before packets reach Python.
 
